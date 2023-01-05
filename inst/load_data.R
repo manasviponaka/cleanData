@@ -15,9 +15,12 @@
 
 
 library(dplyr)
-
+library(ggplot2)
 
 data <- read.csv("./insurance.csv")
+
+#usethis::use_data(name of variable)
+
 print(summary(data))
 print(head(data))
 print(any(is.na(data)))

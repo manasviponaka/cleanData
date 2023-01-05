@@ -12,7 +12,9 @@ RemoteType: github
 Depends:
     R (>= 4.1),
 Imports:
-    dplyr
+    dplyr,
+    ggplot2,
+    rlang
 Suggests: 
     knitr,
     rmarkdown,
