@@ -4,16 +4,18 @@
 \alias{get_plot}
 \title{To visualise the columns of data frame}
 \usage{
-get_plot(df, column1, column2, plot_func)
+get_plot(df, column1 = 0, column2 = 0, fill_color, plot_func)
 }
 \arguments{
 \item{df}{A data frame containing insurance data.}
 
 \item{column1}{A column to select from dataset.}
 
-\item{column2}{A column to select from dataset.}
+\item{column2}{A column to select from dataset. default is}
 
-\item{plot_func}{type of plot to display (its is the name of the ggplot function)}
+\item{fill_color}{A column from dataset to add fill colour to the plot , If any input other than a column name is specified the default is "#bcd4e6"}
+
+\item{plot_func}{type of plot to display (its is the name of the ggplot function) #check ggplot on what function to choose}
 }
 \value{
 displays a plot

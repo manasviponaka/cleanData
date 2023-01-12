@@ -7,9 +7,12 @@
 #' This function allows the user to preprocess the data frame which includes
 #' checking for null values, modifying  the column types.
 
-cleaning <- function(dataset){
+cleaning <- function(dataset ){
+  if (base::is.data.frame(dataset)){
   dataset |>
-    dplyr::mutate_if(is.character , as.factor)
+    dplyr::mutate_if(is.character , as.factor)}
+  else {print("error - The function takes only data.frame class obejects as input")}
+
 }
 
 
