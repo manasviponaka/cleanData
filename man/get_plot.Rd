@@ -4,7 +4,7 @@
 \alias{get_plot}
 \title{To visualise the columns of data frame}
 \usage{
-get_plot(df, column1 = 0, column2 = 0, fill_color = "#bcd4e6", plot_func)
+get_plot(df, column1 = 0, column2 = 0, fill_color = 0, plot_func)
 }
 \arguments{
 \item{df}{A data frame containing insurance data.}
