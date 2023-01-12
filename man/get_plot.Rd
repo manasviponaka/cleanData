@@ -4,7 +4,7 @@
 \alias{get_plot}
 \title{To visualise the columns of data frame}
 \usage{
-get_plot(df, column1 = 0, column2 = 0, fill_color, plot_func)
+get_plot(df, column1 = 0, column2 = 0, fill_color = "#bcd4e6", plot_func)
 }
 \arguments{
 \item{df}{A data frame containing insurance data.}
@@ -24,6 +24,6 @@ displays a plot
 To visualise the columns of data frame
 }
 \details{
-This function allows the user to preprocess the data frame which includes
-checking for null values, modifying  the column types.
+This function allows the user to visualise columns in the data frame which includes
+bar plots  , density plots  , scatter plots and there is an option to add color/fill to show the effect of the confounding variable
 }

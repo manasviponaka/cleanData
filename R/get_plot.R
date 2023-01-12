@@ -10,49 +10,74 @@
 #' @export
 #' @return displays a plot
 #' @details
-#' This function allows the user to preprocess the data frame which includes
-#' checking for null values, modifying  the column types.
+#' This function allows the user to visualise columns in the data frame which includes
+#' bar plots  , density plots  , scatter plots and there is an option to add color/fill to show the effect of the confounding variable
 
 
-get_plot <- function(df , column1 = 0  , column2 = 0, fill_color  ,plot_func ){
+get_plot <- function(df , column1= 0 , column2 = 0, fill_color = "#bcd4e6"  ,plot_func ){
+
   column1<-rlang::enquo(column1)
   column2<-rlang::enquo(column2)
+  text_size <- 15
+  def_pos <- "right"
+  if(rlang::quo_text(fill_color) %in% colnames(df)){
+
   fill_color<-rlang::enquo(fill_color)
 
-  text_size <- 15
+    if((rlang::quo_text(column2) %in% colnames(df)) & (rlang::quo_text(column1) %in% colnames(df)) ){
 
-  if((rlang::quo_text(column2) %in% colnames(df)) & (rlang::quo_text(column1) %in% colnames(df)) ){
+         title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column1) ,"~" ,rlang::quo_text(column2))
+         plot <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = !!column1, y = !!column2, color =  !!fill_color)) +
+                 plot_func()
+         }
 
-    title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column1) ,"~" ,rlang::quo_text(column2))
-    plot <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = !!column1, y = !!column2, color = !! fill_color)) +
-            plot_func()}
 
+    else if (!(rlang::quo_text(column2) %in% colnames(df))  & (rlang::quo_text(column1) %in% colnames(df))){
+       title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column1))
+       plot <- ggplot2::ggplot(data = df, mapping = ggplot2 :: aes(x = !!column1 , fill = !!fill_color)) +
+               plot_func(alpha = 0.5)
+       }
 
-  else if (!(rlang::quo_text(column2) %in% colnames(df))  & (rlang::quo_text(column1) %in% colnames(df))){
-    title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column1))
-    plot <- ggplot2::ggplot(data = df, mapping = ggplot2 :: aes(x = !!column1 , fill = !!fill_color)) +
-            plot_func() }
-
-  else if (!(rlang::quo_text(column1) %in% colnames(df)) & (rlang::quo_text(column2) %in% colnames(df))){
-    title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column2))
-    plot <- ggplot2::ggplot(data = df, mapping = ggplot2 :: aes(x = !!column2 , fill = !!fill_color)) +
-      plot_func()+
-     ggplot2:: coord_flip()
+    else if (!(rlang::quo_text(column1) %in% colnames(df)) & (rlang::quo_text(column2) %in% colnames(df))){
+       title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column2))
+       plot <- ggplot2::ggplot(data = df, mapping = ggplot2 :: aes(x = !!column2 , fill = !!fill_color)) +
+               plot_func(alpha = 0.5)+
+               ggplot2:: coord_flip()
       }
 
   else{
     warning("please check the column names provided and specify each of them with their argument name eg: getplot(df = dataframe , column1 = col1, column2 = col2, fill_color = col3,plot_func = ggplot2::geom_point)")
   }
 
+}
 
-  print(title)
-  def_pos <- "right"
-
-  if(!(rlang::quo_text(fill_color) %in% colnames(df))){
+else{
     def_pos <- "none"
-    plot <- plot+ ggplot2::scale_fill_manual(values = "#bcd4e6")+
-                   ggplot2::scale_color_manual(values = "#bcd4e6")
 
+    if((rlang::quo_text(column2) %in% colnames(df)) & (rlang::quo_text(column1) %in% colnames(df)) ){
+
+      title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column1) ,"~" ,rlang::quo_text(column2))
+      plot <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = !!column1, y = !!column2, color =  fill_color)) +
+        plot_func()
+    }
+
+
+    else if (!(rlang::quo_text(column2) %in% colnames(df))  & (rlang::quo_text(column1) %in% colnames(df))){
+      title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column1))
+      plot <- ggplot2::ggplot(data = df, mapping = ggplot2 :: aes(x = !!column1 , fill = fill_color)) +
+        plot_func(alpha = 0.5)
+    }
+
+    else if (!(rlang::quo_text(column1) %in% colnames(df)) & (rlang::quo_text(column2) %in% colnames(df))){
+      title = paste(as.character(substitute(plot_func))[3] , "plot for" ,rlang::quo_text(column2))
+      plot <- ggplot2::ggplot(data = df, mapping = ggplot2 :: aes(x = !!column2 , fill = fill_color)) +
+        plot_func(alpha = 0.5)+
+        ggplot2:: coord_flip()
+    }
+
+    else{
+      warning("please check the column names provided and specify each of them with their argument name eg: getplot(df = dataframe , column1 = col1, column2 = col2, fill_color = col3,plot_func = ggplot2::geom_point)")
+    }
   }
 
   if((rlang::quo_text(column2) %in% colnames(df)) | (rlang::quo_text(column1) %in% colnames(df)) ){
